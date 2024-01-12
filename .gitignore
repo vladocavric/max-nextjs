@@ -1,0 +1,5 @@
+draft.md
+*/node_modules
+*/.idea
+*/.env
+*/.next
