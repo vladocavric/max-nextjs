@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { saveMeal } from './meals';
+import { revalidatePath } from 'next/cache';
 
 function isInvalidText(text) {
 	if (!text || text.trim() === '') {
@@ -27,12 +28,15 @@ export async function shareMeal(prevState ,formData) {
 		isInvalidText(meal.creator_email) ||
 		!meal.image ||
 		meal.image.size === 0 ||
-    meal.creator_email.includes('@')
+    	!meal.creator_email.includes('@')
 	) {
 		// throw new Error('There is an invalid field');
     return {message: 'There is an invalid field'}
 	}
 
 	await saveMeal(meal);
+	revalidatePath('/meals');
+	// revalidatePath('/meals', 'layout')
+	// layout attribute is optional, and it revalidate all nested pages
 	redirect('/meals');
 }
