@@ -1,11 +1,25 @@
 import Link from "next/link";
 import styles from './button.module.scss';
 
-export default function Button(props) {
-    const { children, href } = props;
+type ButtonProps = {
+    children: React.ReactNode;
+    href?: string;
+    onClick?: () => void;
+};
+
+
+export default function Button(props: ButtonProps) {
+    const { children, href, onClick } = props;
+    if (href) {
+        return (
+            <Link href={href} className={styles.btn}>
+               {children}
+            </Link>
+        );
+    }
     return (
-        <Link href={href} className={styles.btn}>
-           {children}
-        </Link>
+        <button className={styles.btn} onClick={onClick}>
+            {children}
+        </button>
     );
 }
