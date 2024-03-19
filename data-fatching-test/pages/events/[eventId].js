@@ -1,8 +1,8 @@
 import { Fragment } from 'react';
 import { useRouter } from 'next/router';
 
-import { getEventById } from '../../dummy-data';
-import { getEvent } from '../../events-api';
+// import { getEventById } from '../../dummy-data';
+import { getEventById } from '../../events-api';
 import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
@@ -38,7 +38,7 @@ function EventDetailPage(props) {
 export async function getServerSideProps(context) {
 	const { params } = context;
 	const { eventId } = params;
-  const event = await getEvent(eventId)
+  const event = await getEventById(eventId)
 	return { props: {event} };
 }
 

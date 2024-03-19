@@ -14,7 +14,7 @@ export async function getAllEvents() {
     return transomedData
 }
 
-export async function  getEvent(id) {
+export async function  getEventById(id) {
 	const response = await fetch(
 		`https://nextjs-a5656-default-rtdb.firebaseio.com/events/${id}.json`
 	);
