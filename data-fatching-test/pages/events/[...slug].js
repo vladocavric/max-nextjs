@@ -1,13 +1,15 @@
 import { Fragment } from 'react';
 import { useRouter } from 'next/router';
 
-import { getFilteredEvents } from '../../dummy-data';
+// import { getFilteredEvents } from '../../dummy-data';
 import EventList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
 import Button from '../../components/ui/button';
 import ErrorAlert from '../../components/ui/error-alert';
+import { getAllEvents, getFilteredEvents } from '../../events-api';
 
-function FilteredEventsPage() {
+function FilteredEventsPage(props) {
+  const {events} =  props
   const router = useRouter();
 
   const filterData = router.query.slug;
@@ -45,7 +47,7 @@ function FilteredEventsPage() {
   const filteredEvents = getFilteredEvents({
     year: numYear,
     month: numMonth,
-  });
+  }, events);
 
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
@@ -69,5 +71,19 @@ function FilteredEventsPage() {
     </Fragment>
   );
 }
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true, // false or "blocking"
+  }
+}
+
+export async function getStaticProps() {
+  const transomedData = await getAllEvents()
+
+	return { props: { events: transomedData }, revalidate: 10 };
+}
+
 
 export default FilteredEventsPage;
