@@ -19,6 +19,9 @@ export async function  getEventById(id) {
 		`https://nextjs-a5656-default-rtdb.firebaseio.com/events/${id}.json`
 	);
 	const event = await response.json();
+	if(!event) {
+		return null
+	}
 	event.id = id
 
 	return event

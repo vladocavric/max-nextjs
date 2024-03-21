@@ -7,6 +7,7 @@ import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistics from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
 import ErrorAlert from '../../components/ui/error-alert';
+import { notFound } from 'next/navigation';
 
 function EventDetailPage(props) {
   const {event} = props
@@ -36,8 +37,7 @@ function EventDetailPage(props) {
 }
 
 export async function getServerSideProps(context) {
-	const { params } = context;
-	const { eventId } = params;
+	const { eventId } = context.params;
   const event = await getEventById(eventId)
 	return { props: {event} };
 }
