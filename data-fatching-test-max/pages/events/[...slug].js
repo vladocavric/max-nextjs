@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import { getFilteredEvents } from '../../api-util';
 import EventList from '../../components/events/event-list';
@@ -9,11 +10,15 @@ import ErrorAlert from '../../components/ui/error-alert';
 
 function FilteredEventsPage(props) {
 	const { filteredEvents, hasError } = props;
-  const date = new Date(props.date.year, props.date.month - 1)
+	const date = new Date(props.date.year, props.date.month - 1);
 
-	{
-		hasError && (
+	if (hasError) {
+		return (
 			<Fragment>
+				<Head>
+					<title>Filtered Events | Error in filters</title>
+					<meta name='description' content='lorem ipsum' />
+				</Head>
 				<ErrorAlert>
 					<p>Invalid filter. Please adjust your values!</p>
 				</ErrorAlert>
@@ -27,6 +32,10 @@ function FilteredEventsPage(props) {
 	if (!filteredEvents || filteredEvents.length === 0) {
 		return (
 			<Fragment>
+				<Head>
+					<title>Filtered Events | No events found</title>
+					<meta name='description' content='lorem ipsum' />
+				</Head>
 				<ErrorAlert>
 					<p>No events found for the chosen filter!</p>
 				</ErrorAlert>
@@ -39,6 +48,10 @@ function FilteredEventsPage(props) {
 
 	return (
 		<Fragment>
+			<Head>
+				<title>Filtered Events | No events found</title>
+				<meta name='description' content='lorem ipsum' />
+			</Head>
 			<ResultsTitle date={date} />
 			<EventList items={filteredEvents} />
 		</Fragment>
@@ -57,11 +70,14 @@ export async function getServerSideProps(context) {
 		month > 12
 	) {
 		return {
-			props: { hasError: true },
+			props: { hasError: true,
+				date: {
+					year: new Date().getFullYear(),
+					month: new Date().getMonth(),
+				}, },
 		};
 	}
 	const filteredEvents = await getFilteredEvents({ year, month });
-	
 
 	return {
 		props: {

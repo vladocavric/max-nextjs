@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import { getEventById, getFeaturedEvents } from '../../api-util';
 import EventSummary from '../../components/event-detail/event-summary';
@@ -25,6 +26,10 @@ function EventDetailPage(props) {
 
   return (
     <Fragment>
+      	<Head>
+					<title>{event.title}</title>
+					<meta name='description' content='lorem ipsum' />
+				</Head>
       <EventSummary title={event.title} />
       <EventLogistics
         date={event.date}
@@ -60,7 +65,7 @@ export async function getStaticPaths() {
   }))
   return {
     paths,
-    fallback: true
+    fallback: 'blocking'
   }
 }
 
