@@ -1,16 +1,61 @@
-export default function handler(req, res) {
-    console.log(req.query, req.body)
-    if(req.method === 'GET') {
-        res.status(200).json({ message: 'success' });
-    } else if (req.method === 'POST') {
-        const newComment = {
-            id: 'nesto novo',
-            ...req.body
-        }
-		res.status(201).json({ message: 'success' });
-	} 
-    //TODO: ovo mora u novi file [id].js
-    // else if (req.method === "DELETE") {
-    //     res.status(202).json({ message: 'successfully deleted email' });
-    // }  
+import {
+	connectToDB,
+	insertDocument,
+	getDocumentsBy,
+} from '../../../../../helpers/db-util';
+
+export default async function handler(req, res) {
+	let client;
+	try {
+		client = await connectToDB();
+	} catch (error) {
+		res.status(500).json({ message: 'connection to db filed' });
+		return;
+	}
+
+	if (req.method === 'GET') {
+		let items;
+		try {
+			const findBy = { eventId: req.query.eventId };
+			const sort = { _id: -1 };
+			items = await getDocumentsBy({
+				client,
+				collection: 'comments',
+				findBy,
+				sort,
+			});
+		} catch (error) {
+			res.status(500).json({ message: 'failed to fetch data form db' });
+			return;
+		}
+
+		res.status(200).json({ message: 'success', comments: items });
+		return;
+	}
+
+	if (req.method === 'POST') {
+		const { email, name, text } = req.body;
+		if (!email || !email.includes('@') || !name || !text) {
+			res.status(422).json({ message: 'some of data were not valid' });
+			return;
+		}
+		const newComment = {
+			id: 'nesto novo',
+			eventId: req.query.eventId,
+			...req.body,
+		};
+
+		try {
+			const result = await insertDocument({
+				client,
+				document: newComment,
+				collection: 'comments',
+			});
+			newComment.id = result.insertedId;
+		} catch (error) {
+			res.status(500).json({ message: 'inserting data filed' });
+		}
+		res.status(201).json({ message: 'success', comment: newComment });
+		return;
+	}
 }
