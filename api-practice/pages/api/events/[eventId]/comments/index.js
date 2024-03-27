@@ -40,7 +40,6 @@ export default async function handler(req, res) {
 			return;
 		}
 		const newComment = {
-			id: 'nesto novo',
 			eventId: req.query.eventId,
 			...req.body,
 		};
@@ -51,7 +50,7 @@ export default async function handler(req, res) {
 				document: newComment,
 				collection: 'comments',
 			});
-			newComment.id = result.insertedId;
+			newComment._id = result.insertedId;
 		} catch (error) {
 			res.status(500).json({ message: 'inserting data filed' });
 		}
