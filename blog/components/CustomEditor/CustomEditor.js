@@ -32,7 +32,7 @@ function CustomEditor( props ) {
                 data={ '' }
                 onChange={ (event, editor ) => {
                     const data = editor.getData();
-                    console.log( { event, editor, data } );
+                    // console.log( { event, editor, data } );
                     // setValue(data)
                 } }
             />
