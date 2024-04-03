@@ -1,6 +1,10 @@
+import AllBlogs from "../../components/Blog/AllBlogs"
+
+import { DUMMY_DATA } from "../index"
+
 const BlogsPage = () => {
     return(
-        <h1>Blogs page</h1>
+        <AllBlogs blogs={DUMMY_DATA}/>
     )
 }
 

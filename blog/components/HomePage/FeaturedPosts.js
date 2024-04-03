@@ -1,8 +1,12 @@
+import BlogGrid from '../Blog/BlogGrid'
 import styles from './FeaturedPosts.module.css'
 
-const FeaturedPosts = () => {
+const FeaturedPosts = ({blogs}) => {
   return (
-    <div>FeaturedPosts</div>
+    <section className={styles.latest}>
+      <h2>Featured Posts</h2>
+      <BlogGrid blogs={blogs}/>
+    </section>
   )
 }
 

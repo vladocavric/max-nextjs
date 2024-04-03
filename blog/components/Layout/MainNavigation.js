@@ -14,9 +14,6 @@ const MainNavigation = () => {
 					<Link href='/blogs'>blogs</Link>
 				</li>
 				<li>
-					<Link href='/blogs/nesto'>single blog</Link>
-				</li>
-				<li>
 					<Link href='/blogs/nesto/edit'>edit single blog</Link>
 				</li>
 				<li>
