@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import Hero from '../components/HomePage/Hero';
 import FeaturedPosts from '../components/HomePage/FeaturedPosts';
+import { getFeaturedPosts } from '../lib/posts-util';
+
 
 export const DUMMY_DATA = [
 	{
@@ -44,13 +46,36 @@ export const DUMMY_DATA = [
 	},
 ];
 
-const HomePage = () => {
+const HomePage = (props) => {
+
 	return (
 		<>
 			<Hero />
-			<FeaturedPosts blogs={DUMMY_DATA}/>
+			{/* <FeaturedPosts blogs={DUMMY_DATA}/> */}
+			<FeaturedPosts blogs={props.posts} />
 		</>
 	);
 };
+
+export const getStaticProps = () =>  {
+	const featuredPosts = getFeaturedPosts();
+	return {
+		props: {
+			posts: featuredPosts
+		}
+	}
+}
+
+// export function getStaticProps() {
+// 	const featuredPosts = getFeaturedPosts();
+  
+// 	return {
+// 	  props: {
+// 		posts: featuredPosts,
+// 	  },
+// 	};
+//   }
+
+
 
 export default HomePage;
